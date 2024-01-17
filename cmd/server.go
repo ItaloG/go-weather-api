@@ -1,7 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"net/http"
+
+	"github.com/ItaloG/go-weather-api/internal/handlers"
+	"github.com/go-chi/chi/v5"
+)
 
 func main() {
-	fmt.Println("Hello")
+	r := chi.NewRouter()
+	r.Get("/{cep}", handlers.GetCepHandler)
+
+	http.ListenAndServe(":8000", r)
 }
