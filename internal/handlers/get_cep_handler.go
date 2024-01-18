@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"regexp"
 
+	configs "github.com/ItaloG/go-weather-api/config"
 	"github.com/ItaloG/go-weather-api/internal/infra"
 	"github.com/go-chi/chi/v5"
 )
@@ -36,7 +37,7 @@ func GetCepHandler(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode("can not found zipcode")
 		return
 	}
-	weather, err := infra.GetWeatherByLocation(location)
+	weather, err := infra.GetWeatherByLocation(location, configs.Config.WeatherApiKey)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode("can not found weather")
@@ -45,5 +46,4 @@ func GetCepHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(weather)
-	return
 }

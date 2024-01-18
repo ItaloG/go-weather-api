@@ -2,6 +2,7 @@ package infra
 
 import (
 	"encoding/json"
+	"errors"
 	"io"
 	"net/http"
 )
@@ -17,6 +18,7 @@ type ViaCEP struct {
 	Gia         string `json:"gia"`
 	Ddd         string `json:"ddd"`
 	Siafi       string `json:"siafi"`
+	Erro        bool   `json:"erro"`
 }
 
 func GetCepFromViaCep(cep string) (string, error) {
@@ -25,6 +27,9 @@ func GetCepFromViaCep(cep string) (string, error) {
 		return "", err
 	}
 	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		return "", errors.New("unable to find cep")
+	}
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", err
@@ -33,6 +38,9 @@ func GetCepFromViaCep(cep string) (string, error) {
 	err = json.Unmarshal(body, &c)
 	if err != nil {
 		return "", err
+	}
+	if c.Erro {
+		return "", errors.New("unable to find cep")
 	}
 
 	return c.Localidade, nil

@@ -2,10 +2,10 @@ package infra
 
 import (
 	"encoding/json"
+	"errors"
 	"io"
 	"net/http"
-
-	configs "github.com/ItaloG/go-weather-api/config"
+	"strings"
 )
 
 type WeatherApiResponse struct {
@@ -22,7 +22,7 @@ type WeatherApiResponse struct {
 	Current struct {
 		LastUpdatedEpoch int     `json:"last_updated_epoch"`
 		LastUpdated      string  `json:"last_updated"`
-		TempC            int     `json:"temp_c"`
+		TempC            float64 `json:"temp_c"`
 		TempF            float64 `json:"temp_f"`
 		IsDay            int     `json:"is_day"`
 		Condition        struct {
@@ -32,19 +32,19 @@ type WeatherApiResponse struct {
 		} `json:"condition"`
 		WindMph    float64 `json:"wind_mph"`
 		WindKph    float64 `json:"wind_kph"`
-		WindDegree int     `json:"wind_degree"`
+		WindDegree float64 `json:"wind_degree"`
 		WindDir    string  `json:"wind_dir"`
-		PressureMb int     `json:"pressure_mb"`
-		PressureIn int     `json:"pressure_in"`
-		PrecipMm   int     `json:"precip_mm"`
-		PrecipIn   int     `json:"precip_in"`
-		Humidity   int     `json:"humidity"`
-		Cloud      int     `json:"cloud"`
+		PressureMb float64 `json:"pressure_mb"`
+		PressureIn float64 `json:"pressure_in"`
+		PrecipMm   float64 `json:"precip_mm"`
+		PrecipIn   float64 `json:"precip_in"`
+		Humidity   float64 `json:"humidity"`
+		Cloud      float64 `json:"cloud"`
 		FeelslikeC float64 `json:"feelslike_c"`
 		FeelslikeF float64 `json:"feelslike_f"`
-		VisKm      int     `json:"vis_km"`
-		VisMiles   int     `json:"vis_miles"`
-		Uv         int     `json:"uv"`
+		VisKm      float64 `json:"vis_km"`
+		VisMiles   float64 `json:"vis_miles"`
+		Uv         float64 `json:"uv"`
 		GustMph    float64 `json:"gust_mph"`
 		GustKph    float64 `json:"gust_kph"`
 	} `json:"current"`
@@ -56,16 +56,17 @@ type WeatherTemperature struct {
 	TempK float64 `json:"temp_K"`
 }
 
-func GetWeatherByLocation(location string) (WeatherTemperature, error) {
-	config, err := configs.LoadConfig()
-	if err != nil {
-		return WeatherTemperature{}, err
-	}
-	resp, err := http.Get("https://api.weatherapi.com/v1/current.json?q=" + location + "&key=" + config.WeatherApiKey)
+func GetWeatherByLocation(location string, weatherApiKey string) (WeatherTemperature, error) {
+	formattedLocation := strings.Replace(location, " ", "_", -1)
+	url := "https://api.weatherapi.com/v1/current.json?q=" + formattedLocation + "&key=" + weatherApiKey
+	resp, err := http.Get(url)
 	if err != nil {
 		return WeatherTemperature{}, err
 	}
 	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		return WeatherTemperature{}, errors.New("unable to find weather")
+	}
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return WeatherTemperature{}, err

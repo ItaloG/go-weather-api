@@ -6,20 +6,23 @@ type conf struct {
 	WeatherApiKey string `mapstructure:"WEATHER_API_KEY"`
 }
 
-func LoadConfig() (*conf, error) {
+var Config conf = conf{}
+
+func LoadConfig(path string) error {
 	var cfg *conf
 	viper.SetConfigName("app_config")
 	viper.SetConfigType("env")
-	viper.AddConfigPath(".")
+	viper.AddConfigPath(path)
 	viper.SetConfigFile(".env")
 	viper.AutomaticEnv()
 	err := viper.ReadInConfig()
 	if err != nil {
-		panic(err)
+		return err
 	}
 	err = viper.Unmarshal(&cfg)
 	if err != nil {
-		panic(err)
+		return err
 	}
-	return cfg, err
+	Config.WeatherApiKey = cfg.WeatherApiKey
+	return nil
 }
