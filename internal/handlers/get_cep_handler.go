@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"regexp"
 
@@ -20,6 +21,7 @@ func GetCepHandler(w http.ResponseWriter, r *http.Request) {
 
 	isValid, err := regexp.MatchString(`\d{8}`, cep)
 	if err != nil {
+		fmt.Println(err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode("unable to process request")
 		return
@@ -32,12 +34,14 @@ func GetCepHandler(w http.ResponseWriter, r *http.Request) {
 
 	location, err := infra.GetCepFromViaCep(cep)
 	if err != nil {
+		fmt.Println(err.Error())
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode("can not found zipcode")
 		return
 	}
 	weather, err := infra.GetWeatherByLocation(location)
 	if err != nil {
+		fmt.Println(err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode("can not found weather")
 		return
