@@ -11,5 +11,5 @@ func main() {
 	r := chi.NewRouter()
 	r.Get("/{cep}", handlers.GetCepHandler)
 
-	http.ListenAndServe(":8000", r)
+	http.ListenAndServe(":8080", r)
 }
