@@ -2,6 +2,8 @@
 
 *Observações: o projeto utiliza uma API de terceiros para buscar o clima da cidade. Essa API possui um token de acesso com expiração em 31/01/2024. Caso você tente executar o projeto após essa data, poderá encontrar erros. Farei o possível para manter o projeto atualizado.*
 
+No projeto você vai encontrar um arquivo em *api/get_weather.http* ele pode te auxiliar nos testes caso você use a extenção [Rest Client](https://github.com/Huachao/vscode-restclient/tree/master) no VScode. 
+
 ``Teste localmente - SEM DOCKER``
 
 Para rodar o projeto, execute:
