@@ -2,10 +2,10 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"regexp"
 
+	"github.com/ItaloG/go-weather-api/config"
 	"github.com/ItaloG/go-weather-api/internal/infra"
 	"github.com/go-chi/chi/v5"
 )
@@ -21,7 +21,6 @@ func GetCepHandler(w http.ResponseWriter, r *http.Request) {
 
 	isValid, err := regexp.MatchString(`\d{8}`, cep)
 	if err != nil {
-		fmt.Println(err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode("unable to process request")
 		return
@@ -32,17 +31,15 @@ func GetCepHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	location, err := infra.GetCepFromViaCep(cep)
+	location, err := infra.GetCepFromViaCep(cep, "http://viacep.com.br/ws/")
 	if err != nil {
-		fmt.Println(err.Error())
-		w.WriteHeader(http.StatusBadRequest)
+		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode("can not found zipcode")
 		return
 	}
-	weather, err := infra.GetWeatherByLocation(location)
+	weather, err := infra.GetWeatherByLocation(location, "http://api.weatherapi.com/v1/current.json?q=", config.GetWeatherToken())
 	if err != nil {
-		fmt.Println(err.Error())
-		w.WriteHeader(http.StatusInternalServerError)
+		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode("can not found weather")
 		return
 	}

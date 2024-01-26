@@ -1,0 +1,14 @@
+# LOCALHOST
+## SUCCESS
+GET http://localhost:8080/80010000 HTTP/1.1
+
+
+######################
+## INVALID ZIP CODE
+
+GET http://localhost:8080/abc HTTP/1.1
+
+######################
+## ZIP CODE NOT FOUND
+
+GET http://localhost:8080/00000000 HTTP/1.1

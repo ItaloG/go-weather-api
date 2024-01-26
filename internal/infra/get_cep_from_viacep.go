@@ -21,8 +21,8 @@ type ViaCEP struct {
 	Erro        bool   `json:"erro"`
 }
 
-func GetCepFromViaCep(cep string) (string, error) {
-	resp, err := http.Get("http://viacep.com.br/ws/" + cep + "/json/")
+func GetCepFromViaCep(cep string, url string) (string, error) {
+	resp, err := http.Get(url + cep + "/json/")
 	if err != nil {
 		return "", err
 	}

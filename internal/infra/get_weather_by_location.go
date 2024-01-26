@@ -56,10 +56,10 @@ type WeatherTemperature struct {
 	TempK float64 `json:"temp_K"`
 }
 
-func GetWeatherByLocation(location string) (WeatherTemperature, error) {
+func GetWeatherByLocation(location, url, token string) (WeatherTemperature, error) {
 	formattedLocation := strings.Replace(location, " ", "_", -1)
 
-	resp, err := http.Get("http://api.weatherapi.com/v1/current.json?q=" + formattedLocation + "&key=ffc0bf9a91504a27abe01823241701")
+	resp, err := http.Get(url + formattedLocation + "&key=" + token)
 	if err != nil {
 		return WeatherTemperature{}, err
 	}
