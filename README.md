@@ -1,19 +1,18 @@
-## API para buscar clima de ciadades a partir do cep
+## API para buscar clima de cidades a partir do CEP
 
+*Observações: o projeto utiliza uma API de terceiros para buscar o clima da cidade. Essa API possui um token de acesso com expiração em 31/01/2024. Caso você tente executar o projeto após essa data, poderá encontrar erros. Farei o possível para manter o projeto atualizado.*
 
-*Observações o projeto utiliza de uma API de terceiros para buscar o clima da cidade, essa API possui um token de acesso com expiração para 31/01/2024. Caso você tente executar o projeto apos essa data tenha erros. Vou tentar o possivel para manter o projeto em ar.*
+``Teste localmente - SEM DOCKER``
 
-``Test localmente - SEM DOCKER``
+Para rodar o projeto, execute:
 
-Para rodar o projeto execute
-
-Lembre de trocar onde está escrito **YOUR_TOKEN** para seu token da https://www.weatherapi.com/
+Lembre-se de substituir onde está escrito **YOUR_TOKEN** pelo seu token da https://www.weatherapi.com/
 
 ```sh
     WEATHER_TOKEN=YOUR_TOKEN go run cmd/server.go
 ```
 
-Para testar tente rodar
+Para testar, tente rodar
 
 ```sh
     curl http://localhost:8080/80010000
@@ -22,15 +21,15 @@ Para testar tente rodar
 ``Test localmente - COM DOCKER``
 
 
-Para rodar o projeto execute
+Para rodar o projeto, execute:
 
-Lembre de trocar no arquivo docker-compose.yaml a variável **YOUR_TOKEN** para seu token da https://www.weatherapi.com/
+Lembre-se de substituir no arquivo docker-compose.yaml a variável YOUR_TOKEN pelo seu token da https://www.weatherapi.com/
 
 ```sh
     docker compose up -d
 ```
 
-Para testar tente rodar
+Para testar, tente rodar
 
 ```sh
     curl http://localhost:8080/80010000
@@ -38,7 +37,7 @@ Para testar tente rodar
     
 ``Test produção``
 
-O projeto está sendo ospedado pelo Google Cloud Run é possivel acessar o ambiente via https://weather-api-y4majqddoq-uc.a.run.app/80010000
+O projeto está sendo hospedado pelo Google Cloud Run. É possível acessar o ambiente via https://weather-api-y4majqddoq-uc.a.run.app/80010000
 
 Ou testar com
 
