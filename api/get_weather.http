@@ -12,3 +12,20 @@ GET http://localhost:8080/abc HTTP/1.1
 ## ZIP CODE NOT FOUND
 
 GET http://localhost:8080/00000000 HTTP/1.1
+
+######################
+# PRODUCTION
+## SUCCESS
+GET https://weather-api-y4majqddoq-uc.a.run.app/80010000 HTTP/1.1
+
+
+######################
+## INVALID ZIP CODE
+
+GET https://weather-api-y4majqddoq-uc.a.run.app/abc HTTP/1.1
+
+######################
+## ZIP CODE NOT FOUND
+
+GET https://weather-api-y4majqddoq-uc.a.run.app/00000000 HTTP/1.1
+

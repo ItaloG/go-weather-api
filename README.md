@@ -1,24 +1,47 @@
 ## API para buscar clima de ciadades a partir do cep
 
-``Test localmente``
 
-*Observações o projeto utiliza de uma API de terceiros para buscar o clima da cidade, essa API possui um token de acesso com expiração para 31/01/2024. Caso você tente rodar o projeto depois dessa data entre em https://www.weatherapi.com/ gere seu token e subistitua no arquivo get_weather_by_location.go o valor key da url*
+*Observações o projeto utiliza de uma API de terceiros para buscar o clima da cidade, essa API possui um token de acesso com expiração para 31/01/2024. Caso você tente executar o projeto apos essa data tenha erros. Vou tentar o possivel para manter o projeto em ar.*
+
+``Test localmente - SEM DOCKER``
 
 Para rodar o projeto execute
 
+Lembre de trocar onde está escrito **YOUR_TOKEN** para seu token da https://www.weatherapi.com/
+
 ```sh
-    go run cmd/server.go
+    WEATHER_TOKEN=YOUR_TOKEN go run cmd/server.go
 ```
 
 Para testar tente rodar
 
 ```sh
-    curl http://localhost:8000/01001000
+    curl http://localhost:8080/80010000
 ```
 
+``Test localmente - COM DOCKER``
+
+
+Para rodar o projeto execute
+
+Lembre de trocar no arquivo docker-compose.yaml a variável **YOUR_TOKEN** para seu token da https://www.weatherapi.com/
+
+```sh
+    docker compose up -d
+```
+
+Para testar tente rodar
+
+```sh
+    curl http://localhost:8080/80010000
+```
     
-``Teste deployado``
+``Test produção``
 
-Acesse a seguinte url
+O projeto está sendo ospedado pelo Google Cloud Run é possivel acessar o ambiente via https://weather-api-y4majqddoq-uc.a.run.app/80010000
 
-https://weather-api-y4majqddoq-uc.a.run.app/30120060
+Ou testar com
+
+```sh
+    curl https://weather-api-y4majqddoq-uc.a.run.app/80010000
+```
