@@ -1,0 +1,10 @@
+FROM golang:latest as builder
+
+WORKDIR /app
+COPY . .
+RUN GOOS=linux CGO_ENABLED=0 go build -ldflags="-w -s -X 'github.com/ItaloG/go-weather-api/config.WeatherToken=ffc0bf9a91504a27abe01823241701'" -o server cmd/server.go
+
+
+FROM scratch
+COPY --from=builder /app/server .
+ENTRYPOINT [ "./server" ]
